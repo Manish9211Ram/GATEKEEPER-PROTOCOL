@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☢️</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GATEKEEPER PROTOCOL - SECURE NODE</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body class="crt-off">
+    <div id="particle-container"></div>
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-logo">
+            <i class="ri-radar-line"></i>
+            <div class="splash-text">GATEKEEPER</div>
+            <div class="splash-sub">HAWKINS LAB PROTOCOL</div>
+        </div>
+        <div class="splash-loader">
+            <div class="loader-inner"></div>
+        </div>
+    </div>
+    <!-- View 1: Entry Portal -->
+    <div id="view-entry" class="view">
+        <div class="portal-centered">
+            <div class="blinking-cursor"></div>
+            <button id="btn-enter" class="btn-giant">[ ACCESS TERMINAL ]</button>
+        </div>
+    </div>
+
+    <!-- View 2: Authentication -->
+    <div id="view-auth" class="view hidden">
+        <div class="auth-center-shell">
+            <div id="auth-card" class="auth-card">
+                <!-- Front Side: Login -->
+                <div class="auth-face auth-front">
+                    <div class="top-secret-stamp">TOP SECRET</div>
+                    <div id="form-login">
+                        <h3>CLEARANCE REQUIRED</h3>
+                        <div class="field-row">
+                            <label>AGENT_ID:</label>
+                            <input type="text" id="login-id" class="terminal-input" placeholder="...">
+                        </div>
+                        <div class="field-row">
+                            <label>PASSWORD:</label>
+                            <input type="password" id="login-pass" class="terminal-input" placeholder="...">
+                        </div>
+                        <div class="auth-actions">
+                            <button id="btn-login" class="btn btn-primary">VERIFY</button>
+                            <p class="auth-switch">NEW AGENT? <span id="switch-to-signup">ENLIST_HERE</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Side: Signup -->
+                <div class="auth-face auth-back">
+                    <div class="top-secret-stamp">TOP SECRET</div>
+                    <div id="form-signup">
+                        <h3>REGISTRATION</h3>
+                        <div class="field-row">
+                            <label>FULLNAME:</label>
+                            <input type="text" id="signup-name" class="terminal-input" placeholder="...">
+                        </div>
+                        <div class="field-row">
+                            <label>AGENT_ID:</label>
+                            <input type="text" id="signup-id" class="terminal-input" placeholder="...">
+                        </div>
+                        <div class="field-row">
+                            <label>PASSWORD:</label>
+                            <input type="password" id="signup-pass" class="terminal-input" placeholder="...">
+                        </div>
+                        <div class="auth-actions">
+                            <button id="btn-register" class="btn btn-primary">AUTHORIZE</button>
+                            <p class="auth-switch">ALREADY ENLISTED? <span id="switch-to-login">SIGN_IN</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="glitch-overlay"></div>
+        </div>
+    </div>
+
+    <!-- View 3: Dashboard / Command Center -->
+    <div id="view-dashboard" class="view hidden">
+        <header class="sticky-id">
+            <div class="logo">
+                <i class="ri-radar-line"></i> CLASSIFIED: GATEKEEPER PROTOCOL
+            </div>
+            <div class="agent-badge">
+                <button id="btn-dashboard-back" class="btn-icon hidden" title="Back to Radar"><i class="ri-arrow-left-line"></i></button>
+                <div class="badge-text">
+                    <span class="pulse-dot online"></span>
+                    <span id="agent-display-name">AGENT: ...</span>
+                    <span class="id-tag"> [ID: <span id="agent-display-id">...</span>]</span>
+                </div>
+                <button id="btn-upside-down" class="btn-icon" title="Toggle Dimensional Breach"><i class="ri-portal-line"></i></button>
+                <button id="btn-logout" class="btn-icon" title="Terminate Session"><i class="ri-logout-box-r-line"></i></button>
+            </div>
+        </header>
+
+        <div class="dashboard-layout">
+            <aside class="sidebar">
+                <nav>
+                    <button class="nav-item active" data-target="radar-view"><i class="ri-broadcast-line"></i> PROXIMITY_SCAN</button>
+                    <button class="nav-item" data-target="handshake-view"><i class="ri-key-2-line"></i> SECURE_HANDSHAKE</button>
+                    <button class="nav-item" data-target="vault-view"><i class="ri-safe-2-line"></i> SECURE_VAULT</button>
+                    <button class="nav-item" id="btn-manual-transfer"><i class="ri-links-line"></i> INITIALIZE_LINK</button>
+                </nav>
+                <div class="sidebar-status">
+                    <div class="preferences">
+                        <span class="label-text">COMPRESS_INTEL:</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-compress">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="status">
+                        <div class="status-indicator offline" id="connectionStatusIndicator"></div>
+                        <span id="connectionStatusText">SIGNAL_IDLE</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main id="main-content" class="progressive-load">
+                <!-- Proximity Scan View -->
+                <div id="radar-view" class="content-view">
+                    <div class="radar-container">
+                        <div class="radar-sweep"></div>
+                        <div class="wave wave1"></div>
+                        <div class="wave wave2"></div>
+                        <div id="peersContainer"></div>
+                    </div>
+
+                    <div class="view-label">SCANNING_FOR_PROXIMITY_SIGNALS...</div>
+                    <div class="radar-hint">[ HINT: IF NODE NOT FOUND, USE SECURE_HANDSHAKE CODE ]</div>
+                </div>
+
+                <!-- Secure Vault View -->
+                <div id="vault-view" class="content-view hidden">
+                    <div class="vault-container">
+                        <div class="thematic-placeholder">
+                            <i class="ri-safe-2-line"></i>
+                            <h4>SECURE_VAULT_ARCHIVE</h4>
+                            <p>ACCESSING CLASSIFIED INTEL FILES... <br/> [DATA_ENCRYPTED_BY_VOID_PROOF_SHIELDING]</p>
+                            <div class="terminal-loader"></div>
+                        </div>
+                        <div id="vaultList" class="vault-list hidden">
+                            <!-- Files will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Handshake View -->
+                <div id="handshake-view" class="content-view hidden">
+                    <div class="handshake-shell">
+                        <div class="handshake-card">
+                            <h3>QUANTUM_HANDSHAKE</h3>
+                            <p class="tagline">LINK DEVICES ACROSS DIFFERENT SECTORS</p>
+                            
+                            <div class="handshake-grid">
+                                <div class="handshake-action">
+                                    <button id="btn-get-code" class="btn btn-secondary">GENERATE_CODE</button>
+                                    <div id="display-code" class="code-display">------</div>
+                                    <p class="expiry-note">EXPIRES IN 2 MINUTES</p>
+                                </div>
+                                
+                                <div class="handshake-divider">OR</div>
+                                
+                                <div class="handshake-action">
+                                    <input type="text" id="input-code" class="terminal-input" placeholder="ENTER 6-DIGIT CODE" maxlength="6">
+                                    <button id="btn-join-code" class="btn btn-primary">ESTABLISH_LINK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Bottom Nav (Mobile Only) -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-target="radar-view">
+                    <i class="ri-broadcast-line"></i>
+                    <span>RADAR</span>
+                </button>
+                <button class="nav-item" data-target="handshake-view">
+                    <i class="ri-key-2-line"></i>
+                    <span>LINK</span>
+                </button>
+                <button class="nav-item" id="btn-nav-send">
+                    <i class="ri-send-plane-fill"></i>
+                    <span>SEND</span>
+                </button>
+                <button class="nav-item" id="btn-manual-transfer-mobile">
+                    <i class="ri-links-line"></i>
+                    <span>INIT_LINK</span>
+                </button>
+                <button class="nav-item" data-target="vault-view">
+                    <i class="ri-safe-2-line"></i>
+                    <span>VAULT</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="fileInput" multiple style="display: none;" />
+    <input type="file" id="shareFileInput" multiple style="display: none;" />
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal">
+            <h3 id="modalTitle">SECURITY ALERT</h3>
+            <div class="modal-content" id="modalContent"></div>
+            <div class="modal-actions" id="modalActions"></div>
+        </div>
+    </div>
+
+    <!-- QR ID Modal -->
+    <div id="qrModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>AGENT_IDENT_SCAN</h3>
+            <div class="modal-content" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                <div id="qrcode" style="padding: 1rem; background: white; border: 4px solid var(--accent-primary);"></div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+                    SCAN TO ESTABLISH PROXIMITY LINK <br/>
+                    [NETWORK_INTERFACE: <span id="local-ip-display">...</span>]
+                </p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="document.getElementById('qrModal').classList.add('hidden')">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
